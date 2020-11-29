@@ -1,30 +1,22 @@
 import scrapy
-from scrapy.http import Request
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
 
 
-class NytProjectSpider(scrapy.Spider):
+class NytProjectSpider(scrapy.spiders.CrawlSpider):
     name = 'nyt_project'
-    allowed_domains = ['https://www.mo.be/category/thema/milieu/klimaat']
+    allowed_domains = ['www.mo.be']
     start_urls = ['https://www.mo.be/category/thema/milieu/klimaat?page=0']
+    rules = [Rule(LinkExtractor(allow=('/category/thema/milieu/klimaat')), follow=True),
+             Rule(LinkExtractor(allow=('/nieuws/')), follow=False, callback='parse_article')]
 
-    counter = 0
 
     def parse_article(self, response):
-        text = response.xpath().extract()
-        pass
+        title = response.xpath('//h1[@class="title"][1]/text()').extract()
+        #text = response.xpath("").extract()
+        return {'title': title}
 
-    def parse(self, response):
 
-        links = response.xpath("/response.xpath(/div[@class ='field-items']//a[@class='pointer-link']/@href").extract()
-        for link in links:
-            yield Request(link, callback=self.parse_article)
-        self.counter += 1
-        yield Request(f'https://www.mo.be/category/thema/milieu/klimaat?page={self.counter}', callback=self.parse)
-        # yield or give the scraped info to scrapy
-
-        pass
 
 
 #xpath/JSON lines
-
-#f'https://www.mo.be/category/thema/milieu/klimaat?page={counter}'
