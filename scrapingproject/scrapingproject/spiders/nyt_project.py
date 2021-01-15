@@ -8,10 +8,11 @@ import re
 class NytProjectSpider(scrapy.spiders.CrawlSpider):
     name = 'nyt_project'
     allowed_domains = ['www.mo.be']
-    start_urls = ['https://www.mo.be/category/thema/milieu/klimaat?page=0']
-    rules = [Rule(LinkExtractor(allow=('/category/thema/milieu/klimaat')), follow=True),
+    start_urls = ['https://www.mo.be/category/thema/ontwikkeling?page=0']
+    rules = [Rule(LinkExtractor(allow=('category/thema/ontwikkeling')), follow=True),
              Rule(LinkExtractor(allow=('/nieuws/', '/opinie/', '/analyse/', '/boek/', '/commentaar/', '/interview/',
-             '/beeld/', 'zeronaut/', '/column/', '/essay/', '/wereldblog/', '/reportage/')),
+             '/beeld/', 'zeronaut/', '/column/', '/essay/', '/wereldblog/', '/reportage/', '/wijzijnhier/',
+             '/de-ontwikkelaars/')),
              follow=False, callback='parse_article')]
 
     def parse_article(self, response):

@@ -35,7 +35,9 @@ with open(source_file) as f:
 
         for token in doc:
             lemma = token.lemma_
-            if lemma not in stopwords_list and lemma.isdigit() is False and lemma != " " and lemma != "e":
+            if lemma not in stopwords_list and lemma.isdigit() is False and lemma != " " \
+                    and lemma != "e" and lemma != '…':
+
                 if lemma in freq_dict[date][title]["frequency"]:
                     freq_dict[date][title]["frequency"][lemma] += 1
                 else:
